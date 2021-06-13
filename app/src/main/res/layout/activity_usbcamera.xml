@@ -7,12 +7,12 @@
     android:background="#ff000000"
     tools:context=".view.USBCameraActivity"
     tools:ignore="MergeRootFrame">
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/BLACK"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="@null"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -24,13 +24,15 @@
 
         <com.serenegiant.usb.widget.UVCCameraTextureView
             android:id="@+id/camera_view"
+            android:rotation="90"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"/>
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/llayout_contrast"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -57,6 +59,7 @@
 
     <LinearLayout
         android:id="@+id/llayout_brightness"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/llayout_contrast"
@@ -83,6 +86,7 @@
 
     <Switch
         android:id="@+id/switch_rec_voice"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/llayout_brightness"

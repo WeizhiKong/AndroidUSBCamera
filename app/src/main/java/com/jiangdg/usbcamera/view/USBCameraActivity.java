@@ -1,5 +1,7 @@
 package com.jiangdg.usbcamera.view;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,13 +15,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
+
 import com.jiangdg.usbcamera.R;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +45,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -67,6 +75,12 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
 
     private boolean isRequest;
     private boolean isPreview;
+    private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO,
+    };
+    private static final int REQUEST_CODE = 1;
+    private List<String> mMissPermissions = new ArrayList<>();
 
     private UVCCameraHelper.OnMyDevConnectListener listener = new UVCCameraHelper.OnMyDevConnectListener() {
 
@@ -110,7 +124,7 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
                             e.printStackTrace();
                         }
                         Looper.prepare();
-                        if(mCameraHelper != null && mCameraHelper.isCameraOpened()) {
+                        if (mCameraHelper != null && mCameraHelper.isCameraOpened()) {
                             mSeekBrightness.setProgress(mCameraHelper.getModelValue(UVCCameraHelper.MODE_BRIGHTNESS));
                             mSeekContrast.setProgress(mCameraHelper.getModelValue(UVCCameraHelper.MODE_CONTRAST));
                         }
@@ -129,6 +143,10 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (isVersionM()) {
+            checkAndRequestPermissions();
+        }
         setContentView(R.layout.activity_usbcamera);
         ButterKnife.bind(this);
         initView();
@@ -143,20 +161,66 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
         mCameraHelper.setOnPreviewFrameListener(new AbstractUVCCameraHandler.OnPreViewResultListener() {
             @Override
             public void onPreviewResult(byte[] nv21Yuv) {
-                Log.d(TAG, "onPreviewResult: "+nv21Yuv.length);
+                Log.d(TAG, "onPreviewResult: " + nv21Yuv.length);
             }
         });
     }
 
+    private boolean isVersionM() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    private void checkAndRequestPermissions() {
+        mMissPermissions.clear();
+        for (String permission : REQUIRED_PERMISSION_LIST) {
+            int result = ContextCompat.checkSelfPermission(this, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                mMissPermissions.add(permission);
+            }
+        }
+        // check permissions has granted
+        if (mMissPermissions.isEmpty()) {
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    mMissPermissions.toArray(new String[mMissPermissions.size()]),
+                    REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            for (int i = grantResults.length - 1; i >= 0; i--) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    mMissPermissions.remove(permissions[i]);
+                }
+            }
+        }
+        // Get permissions success or not
+        if (mMissPermissions.isEmpty()) {
+
+        } else {
+            Toast.makeText(USBCameraActivity.this, "get permissions failed,exiting...", Toast.LENGTH_SHORT).show();
+            USBCameraActivity.this.finish();
+        }
+    }
+
+
     private void initView() {
         setSupportActionBar(mToolbar);
+        mToolbar.setOnClickListener(view -> {
+            this.getPackageManager().clearPackagePreferredActivities(this.getPackageName());
+            finish();
+
+        });
 
         mSeekBrightness.setMax(100);
         mSeekBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(mCameraHelper != null && mCameraHelper.isCameraOpened()) {
-                    mCameraHelper.setModelValue(UVCCameraHelper.MODE_BRIGHTNESS,progress);
+                if (mCameraHelper != null && mCameraHelper.isCameraOpened()) {
+                    mCameraHelper.setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, progress);
                 }
             }
 
@@ -174,8 +238,8 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
         mSeekContrast.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(mCameraHelper != null && mCameraHelper.isCameraOpened()) {
-                    mCameraHelper.setModelValue(UVCCameraHelper.MODE_CONTRAST,progress);
+                if (mCameraHelper != null && mCameraHelper.isCameraOpened()) {
+                    mCameraHelper.setModelValue(UVCCameraHelper.MODE_CONTRAST, progress);
                 }
             }
 
@@ -223,19 +287,19 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
                     showShortMsg("sorry,camera open failed");
                     return super.onOptionsItemSelected(item);
                 }
-                String picPath = UVCCameraHelper.ROOT_PATH + MyApplication.DIRECTORY_NAME +"/images/"
+                String picPath = UVCCameraHelper.ROOT_PATH + MyApplication.DIRECTORY_NAME + "/images/"
                         + System.currentTimeMillis() + UVCCameraHelper.SUFFIX_JPEG;
 
                 mCameraHelper.capturePicture(picPath, new AbstractUVCCameraHandler.OnCaptureListener() {
                     @Override
                     public void onCaptureResult(String path) {
-                        if(TextUtils.isEmpty(path)) {
+                        if (TextUtils.isEmpty(path)) {
                             return;
                         }
                         new Handler(getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(USBCameraActivity.this, "save path:"+path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(USBCameraActivity.this, "save path:" + path, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -248,7 +312,7 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
                     return super.onOptionsItemSelected(item);
                 }
                 if (!mCameraHelper.isPushing()) {
-                    String videoPath = UVCCameraHelper.ROOT_PATH + MyApplication.DIRECTORY_NAME +"/videos/" + System.currentTimeMillis()
+                    String videoPath = UVCCameraHelper.ROOT_PATH + MyApplication.DIRECTORY_NAME + "/videos/" + System.currentTimeMillis()
                             + UVCCameraHelper.SUFFIX_MP4;
 
 //                    FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264");
@@ -267,17 +331,17 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
                                 FileUtils.putFileStream(data, offset, length);
                             }
                             // type = 0,aac audio stream
-                            if(type == 0) {
+                            if (type == 0) {
 
                             }
                         }
 
                         @Override
                         public void onRecordResult(String videoPath) {
-                            if(TextUtils.isEmpty(videoPath)) {
+                            if (TextUtils.isEmpty(videoPath)) {
                                 return;
                             }
-                            new Handler(getMainLooper()).post(() -> Toast.makeText(USBCameraActivity.this, "save videoPath:"+videoPath, Toast.LENGTH_SHORT).show());
+                            new Handler(getMainLooper()).post(() -> Toast.makeText(USBCameraActivity.this, "save videoPath:" + videoPath, Toast.LENGTH_SHORT).show());
                         }
                     });
                     // if you only want to push stream,please call like this
@@ -361,6 +425,7 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
         if (mCameraHelper != null) {
             mCameraHelper.release();
         }
+
     }
 
     private void showShortMsg(String msg) {

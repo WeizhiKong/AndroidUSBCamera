@@ -82,8 +82,8 @@ public class AspectRatioTextureView extends TextureView	// API >= 14
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
 		if (mRequestedAspect > 0) {
-			int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
-			int initialHeight = MeasureSpec.getSize(heightMeasureSpec);
+			int initialWidth = MeasureSpec.getSize(heightMeasureSpec);
+			int initialHeight = MeasureSpec.getSize(widthMeasureSpec);
 
 			final int horizPadding = getPaddingLeft() + getPaddingRight();
 			final int vertPadding = getPaddingTop() + getPaddingBottom();

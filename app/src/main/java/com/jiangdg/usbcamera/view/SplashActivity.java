@@ -7,13 +7,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.QuickContactBadge;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import butterknife.BindView;
 
 import com.jiangdg.usbcamera.R;
 
@@ -37,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     };
     private static final int REQUEST_CODE = 1;
     private List<String> mMissPermissions = new ArrayList<>();
+    public View wall_paper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +50,9 @@ public class SplashActivity extends AppCompatActivity {
 
         if (isVersionM()) {
             checkAndRequestPermissions();
-        } else {
-            startMainActivity();
         }
+        wall_paper = findViewById(R.id.wallpaper_view);
+        wall_paper.setOnClickListener(view -> startMainActivity());
     }
 
     private boolean isVersionM() {
@@ -65,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         // check permissions has granted
         if (mMissPermissions.isEmpty()) {
-            startMainActivity();
+           // startMainActivity();
         } else {
             ActivityCompat.requestPermissions(this,
                     mMissPermissions.toArray(new String[mMissPermissions.size()]),
@@ -85,9 +89,9 @@ public class SplashActivity extends AppCompatActivity {
         }
         // Get permissions success or not
         if (mMissPermissions.isEmpty()) {
-            startMainActivity();
+            //
         } else {
-            Toast.makeText(SplashActivity.this, "get permissions failed,exiting...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SplashActivity.this, "get permissions failed,exiting...", Toast.LENGTH_SHORT).show();
             SplashActivity.this.finish();
         }
     }
@@ -99,7 +103,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, USBCameraActivity.class));
                 SplashActivity.this.finish();
             }
-        }, 3000);
+        }, 10);
     }
 }
 
