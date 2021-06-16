@@ -50,12 +50,6 @@ import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * UVCCamera use demo
- * <p>
- * Created by jiangdongguo on 2017/9/30.
- */
-
 public class USBCameraActivity extends AppCompatActivity implements CameraDialog.CameraDialogParent, CameraViewInterface.Callback {
     private static final String TAG = "Debug";
     @BindView(R.id.camera_view)
@@ -209,11 +203,6 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
 
     private void initView() {
         setSupportActionBar(mToolbar);
-        mToolbar.setOnClickListener(view -> {
-            this.getPackageManager().clearPackagePreferredActivities(this.getPackageName());
-            finish();
-
-        });
 
         mSeekBrightness.setMax(100);
         mSeekBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

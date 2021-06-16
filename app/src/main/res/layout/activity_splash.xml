@@ -4,12 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/BLACK"
     tools:ignore="MergeRootFrame">
-    <View
-        android:id="@+id/wallpaper_view"
-        android:layout_width="match_parent"
-        android:background="@mipmap/wallpaper"
-        android:layout_height="match_parent">
-    </View>
 
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        <View
+            android:id="@+id/exit_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@mipmap/exit"/>
+        <View
+            android:id="@+id/settings_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/settings"/>
+        <View
+            android:id="@+id/scamera_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/scamera"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/views"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp">
+        <ImageView
+            android:clickable="true"
+            android:id="@+id/view_light"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/light_selector">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_tep"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/tep_close">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_weather"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_tep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/wether_close">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_water"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/wa_close">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_bottom"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_water"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bottom">
+        </ImageView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_above="@id/views"
+        android:layout_width="match_parent"
+        android:layout_below="@id/top_bar"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/light_top">
+        </ImageView>
+        <TextClock
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:format24Hour ="HH:mm:ss"
+            android:format12Hour ="hh:mm:ss"
+            android:textColor="@color/WHITE"
+            android:textStyle="bold"
+            android:textSize="30sp" />
+
+        <TextClock
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_time"
+            android:layout_marginLeft="20dp"
+            android:format24Hour ="MM月dd日 EEEE"
+            android:format12Hour ="MM月dd日 EEEE"
+            android:textColor="@color/WHITE"
+            android:textStyle="normal"
+            android:textSize="20sp" />
+    </RelativeLayout>
 </RelativeLayout>

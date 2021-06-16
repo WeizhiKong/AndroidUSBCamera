@@ -1,15 +1,21 @@
 package com.jiangdg.usbcamera.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import com.jiangdg.usbcamera.R;
 
@@ -27,6 +34,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.provider.Settings;
+
 
 /**
  * permission checking
@@ -34,13 +43,51 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class SplashActivity extends AppCompatActivity {
+    private static final String TAG = "Debug";
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO,
     };
     private static final int REQUEST_CODE = 1;
     private List<String> mMissPermissions = new ArrayList<>();
-    public View wall_paper;
+    @BindView(R.id.exit_btn)
+    public View exit_btn;
+    @BindView(R.id.settings_btn)
+    public View settings_btn;
+    @BindView(R.id.scamera_btn)
+    public View scamera_btn;
+
+    @BindView(R.id.view_top)
+    public ImageView view_top;
+
+    @BindView(R.id.view_light)
+    public ImageView view_light;
+    @BindView(R.id.view_tep)
+    public ImageView view_tep;
+    @BindView(R.id.view_weather)
+    public ImageView view_weather;
+    @BindView(R.id.view_water)
+    public ImageView view_water;
+
+    @BindView(R.id.tv_time)
+    public TextView tv_time;
+    @BindView(R.id.tv_date)
+    public TextView tv_date;
+
+    private int[] imgs = {
+            R.mipmap.light_open,
+            R.mipmap.light_close,
+            R.mipmap.tep_open,
+            R.mipmap.tep_close,
+            R.mipmap.wether_open,
+            R.mipmap.wether_close,
+            R.mipmap.wa_open,
+            R.mipmap.wa_close,
+            R.mipmap.light_top,
+            R.mipmap.air_top,
+            R.mipmap.outdoor_top,
+            R.mipmap.humidity_top
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +98,8 @@ public class SplashActivity extends AppCompatActivity {
         if (isVersionM()) {
             checkAndRequestPermissions();
         }
-        wall_paper = findViewById(R.id.wallpaper_view);
-        wall_paper.setOnClickListener(view -> startMainActivity());
+        ButterKnife.bind(this);
+        initView();
     }
 
     private boolean isVersionM() {
@@ -69,7 +116,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         // check permissions has granted
         if (mMissPermissions.isEmpty()) {
-           // startMainActivity();
+            // startMainActivity();
         } else {
             ActivityCompat.requestPermissions(this,
                     mMissPermissions.toArray(new String[mMissPermissions.size()]),
@@ -105,5 +152,54 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 10);
     }
+
+    private void initView() {
+        exit_btn.setOnClickListener(view -> {
+            this.getPackageManager().clearPackagePreferredActivities(this.getPackageName());
+            finish();
+        });
+        settings_btn.setOnClickListener(view -> startSettings());
+        scamera_btn.setOnClickListener(view -> startMainActivity());
+
+        view_light.setBackgroundResource(imgs[0]);
+        view_light.setOnClickListener(view -> {
+            resetView();
+            view_light.setBackgroundResource(imgs[0]);
+            view_top.setBackgroundResource(imgs[8]);
+            tv_time.setVisibility(View.VISIBLE);
+            tv_date.setVisibility(View.VISIBLE);
+        });
+        view_tep.setOnClickListener(view -> {
+            resetView();
+            view_tep.setBackgroundResource(imgs[2]);
+            view_top.setBackgroundResource(imgs[9]);
+        });
+        view_weather.setOnClickListener(view -> {
+            resetView();
+            view_weather.setBackgroundResource(imgs[4]);
+            view_top.setBackgroundResource(imgs[10]);
+        });
+        view_water.setOnClickListener(view -> {
+            resetView();
+            view_water.setBackgroundResource(imgs[6]);
+            view_top.setBackgroundResource(imgs[11]);
+        });
+
+    }
+
+    private void resetView() {
+        tv_time.setVisibility(View.GONE);
+        tv_date.setVisibility(View.GONE);
+        view_light.setBackgroundResource(imgs[1]);
+        view_tep.setBackgroundResource(imgs[3]);
+        view_weather.setBackgroundResource(imgs[5]);
+        view_water.setBackgroundResource(imgs[7]);
+    }
+
+    private void startSettings() {
+        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+        startActivity(intent);
+    }
+
 }
 
