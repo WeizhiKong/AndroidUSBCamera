@@ -80,6 +80,7 @@ public class USBCameraActivity extends AppCompatActivity implements CameraDialog
 
         @Override
         public void onAttachDev(UsbDevice device) {
+            showShortMsg("request: " + isRequest);
             // request open permission
             if (!isRequest) {
                 isRequest = true;

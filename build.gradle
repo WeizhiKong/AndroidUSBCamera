@@ -27,7 +27,6 @@ ext {
     commonLibVersion= '4.1.1'
     versionCompiler = 28
     versionTarget = 27
-    // please modify it to 16
     minSdkVersion = 21
     versionCode = 100
     versionNameString = '2.3.5.20210316'

@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jiangdg.usbcamera">
 
+    <!--权限申请 相机-->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!--使用uses-feature指定需要相机资源-->
+    <uses-feature android:name="android.hardware.Camera"/>
+    <!--需要自动聚焦 -->
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <!--存储图片或者视频-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- 运行应用录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.SplashActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.HOME" />
@@ -26,6 +38,12 @@
         </activity>
 
         <activity android:name=".view.USBCameraActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.CustomCameraActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

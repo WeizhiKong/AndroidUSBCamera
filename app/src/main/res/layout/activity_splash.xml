@@ -2,31 +2,125 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/screen_layout"
+    android:background="@mipmap/bg_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BLACK"
+    android:paddingBottom="10dp"
     tools:ignore="MergeRootFrame">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/views"
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="1dp">
+        <ImageView
+            android:clickable="true"
+            android:id="@+id/view_light"
+            android:paddingTop="3dp"
+            android:layout_weight="3"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/light_selector">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_tep"
+            android:layout_weight="3"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/tep_close">
+        </ImageView>
+        <ImageView
+            android:id="@+id/view_weather"
+            android:layout_weight="3"
+            android:scaleType="fitXY"
+            android:layout_below="@id/view_tep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wether_close">
+        </ImageView>
+        <ImageView
+            android:layout_weight="3"
+            android:id="@+id/view_water"
+            android:scaleType="fitXY"
+            android:layout_below="@id/view_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wa_close">
+        </ImageView>
 
+        <ImageView
+            android:id="@+id/view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/view_water"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bottom"></ImageView>
+    </LinearLayout>
     <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/views"
+        android:background="@color/TRANSPARENT"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/view_top"
+            android:scaleType="fitStart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/light_top">
+        </ImageView>
+        <TextClock
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="45dp"
+            android:format24Hour ="HH:mm:ss"
+            android:format12Hour ="hh:mm:ss"
+            android:textColor="@color/WHITE"
+            android:textStyle="normal"
+            android:textSize="40sp" />
+
+        <TextClock
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_time"
+            android:layout_marginLeft="30dp"
+            android:format24Hour ="2021年MM月dd日 EEEE"
+            android:format12Hour ="2021年MM月dd日 EEEE"
+            android:textColor="@color/WHITE"
+            android:textStyle="normal"
+            android:textSize="15sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:visibility="visible"
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/TRANSPARENT"
         android:layout_alignParentTop="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
         <View
-            android:id="@+id/exit_btn"
+            android:id="@+id/settings_btn"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:background="@mipmap/exit"/>
-        <View
-            android:id="@+id/settings_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerInParent="true"
             android:background="@mipmap/settings"/>
+        <View
+            android:id="@+id/exit_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/TRANSPARENT"/>
         <View
             android:id="@+id/scamera_btn"
             android:layout_width="20dp"
@@ -35,89 +129,5 @@
             android:layout_alignParentRight="true"
             android:background="@mipmap/scamera"/>
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/views"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="20dp">
-        <ImageView
-            android:clickable="true"
-            android:id="@+id/view_light"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/light_selector">
-        </ImageView>
-        <ImageView
-            android:id="@+id/view_tep"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/view_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/tep_close">
-        </ImageView>
-        <ImageView
-            android:id="@+id/view_weather"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/view_tep"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/wether_close">
-        </ImageView>
-        <ImageView
-            android:id="@+id/view_water"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/view_weather"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/wa_close">
-        </ImageView>
-        <ImageView
-            android:id="@+id/view_bottom"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/view_water"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/bottom">
-        </ImageView>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/top_layout"
-        android:layout_above="@id/views"
-        android:layout_width="match_parent"
-        android:layout_below="@id/top_bar"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/view_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/light_top">
-        </ImageView>
-        <TextClock
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:format24Hour ="HH:mm:ss"
-            android:format12Hour ="hh:mm:ss"
-            android:textColor="@color/WHITE"
-            android:textStyle="bold"
-            android:textSize="30sp" />
-
-        <TextClock
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_time"
-            android:layout_marginLeft="20dp"
-            android:format24Hour ="MM月dd日 EEEE"
-            android:format12Hour ="MM月dd日 EEEE"
-            android:textColor="@color/WHITE"
-            android:textStyle="normal"
-            android:textSize="20sp" />
     </RelativeLayout>
 </RelativeLayout>

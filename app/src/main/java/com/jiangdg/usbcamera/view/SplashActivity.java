@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.provider.Settings;
 
+import static com.jiangdg.usbcamera.utils.SystemUtil.hideBottomNav;
+
 
 /**
  * permission checking
@@ -47,6 +50,7 @@ public class SplashActivity extends AppCompatActivity {
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA
     };
     private static final int REQUEST_CODE = 1;
     private List<String> mMissPermissions = new ArrayList<>();
@@ -56,6 +60,8 @@ public class SplashActivity extends AppCompatActivity {
     public View settings_btn;
     @BindView(R.id.scamera_btn)
     public View scamera_btn;
+    @BindView(R.id.screen_layout)
+    public RelativeLayout screen_layout;
 
     @BindView(R.id.view_top)
     public ImageView view_top;
@@ -100,6 +106,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         ButterKnife.bind(this);
         initView();
+        hideBottomNav(SplashActivity.this);
     }
 
     private boolean isVersionM() {
@@ -147,8 +154,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, USBCameraActivity.class));
-                SplashActivity.this.finish();
+                startActivity(new Intent(SplashActivity.this, CustomCameraActivity.class));
+//                SplashActivity.this.finish();
             }
         }, 10);
     }
@@ -161,28 +168,32 @@ public class SplashActivity extends AppCompatActivity {
         settings_btn.setOnClickListener(view -> startSettings());
         scamera_btn.setOnClickListener(view -> startMainActivity());
 
-        view_light.setBackgroundResource(imgs[0]);
+        view_light.setImageResource(imgs[0]);
         view_light.setOnClickListener(view -> {
             resetView();
-            view_light.setBackgroundResource(imgs[0]);
-            view_top.setBackgroundResource(imgs[8]);
+            view_light.setImageResource(imgs[0]);
+            view_top.setImageResource(imgs[8]);
             tv_time.setVisibility(View.VISIBLE);
             tv_date.setVisibility(View.VISIBLE);
+            screen_layout.setBackgroundResource(R.mipmap.bg_black);
         });
         view_tep.setOnClickListener(view -> {
             resetView();
-            view_tep.setBackgroundResource(imgs[2]);
-            view_top.setBackgroundResource(imgs[9]);
+            view_tep.setImageResource(imgs[2]);
+            view_top.setImageResource(imgs[9]);
+            screen_layout.setBackgroundResource(R.mipmap.bg_green);
         });
         view_weather.setOnClickListener(view -> {
             resetView();
-            view_weather.setBackgroundResource(imgs[4]);
-            view_top.setBackgroundResource(imgs[10]);
+            view_weather.setImageResource(imgs[4]);
+            view_top.setImageResource(imgs[10]);
+            screen_layout.setBackgroundResource(R.mipmap.bg_black);
         });
         view_water.setOnClickListener(view -> {
             resetView();
-            view_water.setBackgroundResource(imgs[6]);
-            view_top.setBackgroundResource(imgs[11]);
+            view_water.setImageResource(imgs[6]);
+            view_top.setImageResource(imgs[11]);
+            screen_layout.setBackgroundResource(R.mipmap.bg_blue);
         });
 
     }
@@ -190,16 +201,17 @@ public class SplashActivity extends AppCompatActivity {
     private void resetView() {
         tv_time.setVisibility(View.GONE);
         tv_date.setVisibility(View.GONE);
-        view_light.setBackgroundResource(imgs[1]);
-        view_tep.setBackgroundResource(imgs[3]);
-        view_weather.setBackgroundResource(imgs[5]);
-        view_water.setBackgroundResource(imgs[7]);
+        view_light.setImageResource(imgs[1]);
+        view_tep.setImageResource(imgs[3]);
+        view_weather.setImageResource(imgs[5]);
+        view_water.setImageResource(imgs[7]);
     }
 
     private void startSettings() {
         Intent intent = new Intent(Settings.ACTION_SETTINGS);
         startActivity(intent);
     }
+
 
 }
 
