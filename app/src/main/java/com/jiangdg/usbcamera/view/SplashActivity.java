@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.jiangdg.usbcamera.R;
+import com.jiangdg.usbcamera.utils.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +37,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.provider.Settings;
-
-import static com.jiangdg.usbcamera.utils.SystemUtil.hideBottomNav;
 
 
 /**
@@ -106,7 +105,19 @@ public class SplashActivity extends AppCompatActivity {
         }
         ButterKnife.bind(this);
         initView();
-        hideBottomNav(SplashActivity.this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        SystemUtil.hideBottomNav(SplashActivity.this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SystemUtil.hideBottomNav(SplashActivity.this);
     }
 
     private boolean isVersionM() {

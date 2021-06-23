@@ -112,9 +112,6 @@ public class CustomCameraActivity extends AppCompatActivity implements View.OnCl
 
     private View back_view;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +135,6 @@ public class CustomCameraActivity extends AppCompatActivity implements View.OnCl
         initListener();
 
         initOrientate();
-        SystemUtil.hideBottomNav(CustomCameraActivity.this);
         //初始化CameraPresenter
         mCameraPresenter = new CameraPresenter(CustomCameraActivity.this, sf_camera);
         //设置后置摄像头
@@ -217,6 +213,7 @@ public class CustomCameraActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume(){
         super.onResume();
+        SystemUtil.hideBottomNav(CustomCameraActivity.this);
 //        if(isFull){
 //            ViewGroup.LayoutParams params = sf_camera.getLayoutParams();
 //
@@ -233,6 +230,13 @@ public class CustomCameraActivity extends AppCompatActivity implements View.OnCl
 //            // params.width = view.getWidth();
 //            sf_camera.setLayoutParams(params);
 //        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        SystemUtil.hideBottomNav(CustomCameraActivity.this);
+
     }
 
     /**
