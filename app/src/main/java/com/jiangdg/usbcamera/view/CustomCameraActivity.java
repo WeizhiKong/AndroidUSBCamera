@@ -120,7 +120,7 @@ public class CustomCameraActivity extends AppCompatActivity implements View.OnCl
      //   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
       //          WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         setContentView(R.layout.activity_customcamera);
-
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //获取屏幕宽度
         DisplayMetrics metrics = new DisplayMetrics();

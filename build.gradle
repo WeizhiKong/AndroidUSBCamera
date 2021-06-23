@@ -28,8 +28,8 @@ ext {
     versionCompiler = 28
     versionTarget = 27
     minSdkVersion = 21
-    versionCode = 100
-    versionNameString = '2.3.5.20210316'
+    versionCode = 11
+    versionNameString = '1.0.2'
     javaSourceCompatibility = JavaVersion.VERSION_1_8
     javaTargetCompatibility = JavaVersion.VERSION_1_8
 }
